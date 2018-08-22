@@ -2,7 +2,7 @@
  
 # RasPi.vn
  
-import paho.mqtt.client as mqtt
+import paho.mqtt.client as client
 import json
 #import RPi.GPIO as GPIO 
  
@@ -44,12 +44,12 @@ def on_log(mqttc, obj, level, string):
 	pass
 
 print('start...')
-mqttc = mqtt.Client()
-mqttc.on_message = on_message
-mqttc.on_connect = on_connect
-mqttc.on_publish = on_publish
-mqttc.on_subscribe = on_subscribe
+client = mqtt.Client()
+client.on_message = on_message
+client.on_connect = on_connect
+client.on_publish = on_publish
+client.on_subscribe = on_subscribe
  
-mqttc.connect(broker, 1883, 60) #dien IP cua Pi, vd: 192.168.1.77
-mqttc.subscribe(topics, 0) 
-mqttc.loop_forever()
+client.connect(broker, 1883, 60) #dien IP cua Pi, vd: 192.168.1.77
+client.subscribe(topics, 0) 
+client.loop_forever()
