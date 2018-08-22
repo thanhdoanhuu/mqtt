@@ -13,8 +13,12 @@ class SendClass(object):
 
 sendOject = SendClass()
 
+#brokerHost = "172.21.33.24" #Rapian vituabox
+#brokerHost = "172.20.10.10" #Iphone
+brokerHost = "192.168.43.50" #Leo
+
 topics = "demo/led"
-broker = "172.21.33.24"
+
 #define callback
 def on_message(client, userdata, message):
     print("received message: ",str(message.payload.decode("utf-8")))

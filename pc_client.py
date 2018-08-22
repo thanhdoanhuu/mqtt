@@ -16,8 +16,12 @@ class SendClass(object):
 
 sendOject = SendClass()
 
+#brokerHost = "172.21.33.24" #Rapian vituabox
+#brokerHost = "172.20.10.10" #Iphone
+brokerHost = "192.168.43.50" #Leo
+
 topics = "demo/led"
-brokerHost = "172.21.33.24"
+
 computerName = socket.gethostname()
 computerIpAdress = socket.gethostbyname(socket.getfqdn())
 print(computerName)
