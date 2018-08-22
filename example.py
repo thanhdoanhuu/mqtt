@@ -17,7 +17,7 @@ sendOject = SendClass()
 #brokerHost = "172.20.10.10" #Iphone
 brokerHost = "192.168.43.50" #Leo
 
-topics = "demo/led"
+topics = "raspivn/demo/led"
 
 #define callback
 def on_message(client, userdata, message):
@@ -27,8 +27,8 @@ client= paho.Client("client-001") #create client object client1.on_publish = on_
 ######Bind function to callback
 client.on_message=on_message
 #####
-print("connecting to broker ",broker)
-client.connect(broker)#connect
+print("connecting to broker ",brokerHost)
+client.connect(brokerHost)#connect
 client.loop_start() #start loop to process received messages
 print("subscribing ")
 client.subscribe("demo/status")#subscribe

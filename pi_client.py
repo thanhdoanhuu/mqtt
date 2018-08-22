@@ -7,8 +7,11 @@ import json
 #import RPi.GPIO as GPIO 
  
 gpio_pin = 14 
-topics = "demo/led"
-broker = "172.21.33.24"
+#brokerHost = "172.21.33.24" #Rapian vituabox
+#brokerHost = "172.20.10.10" #Iphone
+brokerHost = "192.168.43.50" #Leo
+
+topics = "raspivn/demo/led"
  
 #GPIO.setmode(GPIO.BCM) # chon kieu danh so chan GPIO la BCM
 #GPIO.setup(gpio_pin, GPIO.OUT)
@@ -50,6 +53,6 @@ client.on_connect = on_connect
 client.on_publish = on_publish
 client.on_subscribe = on_subscribe
  
-client.connect(broker, 1883, 60) #dien IP cua Pi, vd: 192.168.1.77
+client.connect(brokerHost, 1883, 60) #dien IP cua Pi, vd: 192.168.1.77
 client.subscribe(topics, 0) 
 client.loop_forever()

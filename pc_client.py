@@ -20,7 +20,7 @@ sendOject = SendClass()
 #brokerHost = "172.20.10.10" #Iphone
 brokerHost = "192.168.43.50" #Leo
 
-topics = "demo/led"
+topics = "raspivn/demo/led"
 
 computerName = socket.gethostname()
 computerIpAdress = socket.gethostbyname(socket.getfqdn())
