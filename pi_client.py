@@ -54,5 +54,5 @@ client.on_publish = on_publish
 client.on_subscribe = on_subscribe
  
 client.connect(brokerHost, 1883, 60) #dien IP cua Pi, vd: 192.168.1.77
-client.subscribe(topics, 0) 
+client.subscribe(topic, 0) 
 client.loop_forever()
