@@ -16,7 +16,7 @@ class SendClass(object):
 
 sendOject = SendClass()
 
-topics = "raspivn/demo/led"
+topics = "demo/led"
 brokerHost = "172.21.33.24"
 computerName = socket.gethostname()
 computerIpAdress = socket.gethostbyname(socket.getfqdn())

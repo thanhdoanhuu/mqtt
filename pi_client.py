@@ -7,7 +7,7 @@ import json
 #import RPi.GPIO as GPIO 
  
 gpio_pin = 14 
-topics = "raspivn/demo/led"
+topics = "demo/led"
 broker = "172.21.33.24"
  
 #GPIO.setmode(GPIO.BCM) # chon kieu danh so chan GPIO la BCM
