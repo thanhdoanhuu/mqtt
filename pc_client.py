@@ -1,7 +1,7 @@
 #!/usr/bin/python
  
 # RasPi.vn
-import context  # Ensures paho is in PYTHONPATH
+# import context  # Ensures paho is in PYTHONPATH
 import paho.mqtt.publish as publish
 import paho.mqtt.subscribe as subscribe
 
@@ -10,15 +10,15 @@ brokerHost = "172.21.33.24"
 
 
 
-input = raw_input("nhap on de tat LED hoac nhap off de bat LED, nhap exit de thoat:\n")
+input = raw_input("type [on] to turn on LED or type [off] to turn off LED, type [exit] to exit:\n")
 print("Ban chon " + input + "!")
 
 run = True
 while(run):
  if(input == 'off'):
-   publish.single(topics, "0", hostname="172.21.33.24") #dien IP cua Pi, vd: 192.168.1.77
+   publish.single(topics, "0", hostname = brokerHost) 
  elif(input == 'on'):
-   publish.single(topics, "1", hostname="172.21.33.24") 
+   publish.single(topics, "1", hostname = brokerHost) 
  elif(input == 'exit'):
    break
  input = raw_input("")
