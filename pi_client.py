@@ -3,6 +3,7 @@
 # RasPi.vn
  
 import paho.mqtt.client as mqtt
+import json
 #import RPi.GPIO as GPIO 
  
 gpio_pin = 14 
