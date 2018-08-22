@@ -12,24 +12,24 @@ broker = "172.21.33.24"
  
 #GPIO.setmode(GPIO.BCM) # chon kieu danh so chan GPIO la BCM
 #GPIO.setup(gpio_pin, GPIO.OUT)
-print('connect')
+
 def on_connect(mqttc, obj, flags, rc):
 	pass
  
 def on_message(mqttc, obj, msg):
 	print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
 
-	objRecive = json.loads(msg.payload)
-	print (objRecive["computerIpAdress"])
-	print (objRecive["message"])
+	objReceive = json.loads(msg.payload)
+	print (objReceive["computerIpAdress"])
+	print (objReceive["message"])
 
 	if(msg.topic == topics):
-		if(objRecive.message == 1): #bat LED
-		 #GPIO.output(gpio_pin, GPIO.HIGH)
-		   print('ON')
-		elif(objRecive.message == 0): #tat LED
-		 #GPIO.output(gpio_pin, GPIO.LOW)
-		   print('OFF')
+		if(objReceive["message"] == 1): #bat LED
+			#GPIO.output(gpio_pin, GPIO.HIGH)
+			print('ON')
+		elif(objReceive["message"] == 0): #tat LED
+	 		GPIO.output(gpio_pin, GPIO.LOW)
+			print('OFF')
  
 def on_publish(mqttc, obj, mid):
 	print("mid: "+str(mid))
