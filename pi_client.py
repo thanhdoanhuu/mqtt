@@ -29,7 +29,7 @@ def on_message(mqttc, obj, msg):
 			#GPIO.output(gpio_pin, GPIO.HIGH)
 			print('ON')
 		elif(objReceive["message"] == 0): #tat LED
-	 		GPIO.output(gpio_pin, GPIO.LOW)
+	 		# GPIO.output(gpio_pin, GPIO.LOW)
 			print('OFF')
  
 def on_publish(mqttc, obj, mid):
