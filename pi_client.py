@@ -35,7 +35,7 @@ def on_message(mqttc, obj, msg):
 	 		# GPIO.output(gpio_pin, GPIO.LOW)
 			print('OFF')
 
-		client.publish(topic,str(msg.payload))#publish
+		# client.publish(topic,str(msg.payload))#publish
  
 def on_publish(mqttc, obj, mid):
 	print("mid: "+str(mid))
