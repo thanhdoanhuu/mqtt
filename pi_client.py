@@ -4,6 +4,7 @@
  
 import paho.mqtt.client as client
 import json
+import socket
 #import RPi.GPIO as GPIO 
  
 gpio_pin = 14 
@@ -24,19 +25,22 @@ def on_message(mqttc, obj, msg):
 	print("Receive: " +msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
 
 	objReceive = json.loads(msg.payload)
-	# print (objReceive["computerName"])
-	# print (objReceive["computerIpAdress"])
-	# print (objReceive["message"])
+	objReceive["computerName"] = socket.gethostname()
+	objReceive["computerIpAdress"] = socket.gethostbyname(socket.getfqdn())
+	
 
 	if(msg.topic == topic):
 		if(objReceive["message"] == 1): #bat LED
 			#GPIO.output(gpio_pin, GPIO.HIGH)
 			print('ON')
+			objReceive["message"] = "ON"
 		elif(objReceive["message"] == 0): #tat LED
 	 		# GPIO.output(gpio_pin, GPIO.LOW)
 			print('OFF')
+			objReceive["message"] = "OFF"
 		else:
 			print('Do nothing')
+			objReceive["message"] = "Do nothing"
 
 		client.publish(topicSend,str(msg.payload))#publish
  
