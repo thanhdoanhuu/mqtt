@@ -45,7 +45,7 @@ while(run):
 		break
 
 	sendMessage = json.dumps(sendOject.__dict__) 
-	print("publishing: ", sendMessage)
+	# print("publishing: ", sendMessage)
 	
 	client.publish(topics,sendMessage)#publish
 

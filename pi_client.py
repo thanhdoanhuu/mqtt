@@ -11,7 +11,7 @@ gpio_pin = 14
 #brokerHost = "172.20.10.10" #Iphone
 brokerHost = "192.168.43.50" #Leo
 
-topics = "raspivn/demo/led"
+topic = "raspivn/demo/led"
  
 #GPIO.setmode(GPIO.BCM) # chon kieu danh so chan GPIO la BCM
 #GPIO.setup(gpio_pin, GPIO.OUT)
@@ -27,7 +27,7 @@ def on_message(mqttc, obj, msg):
 	print (objReceive["computerIpAdress"])
 	print (objReceive["message"])
 
-	if(msg.topic == topics):
+	if(msg.topic == topic):
 		if(objReceive["message"] == 1): #bat LED
 			#GPIO.output(gpio_pin, GPIO.HIGH)
 			print('ON')
@@ -35,7 +35,7 @@ def on_message(mqttc, obj, msg):
 	 		# GPIO.output(gpio_pin, GPIO.LOW)
 			print('OFF')
 
-		client.publish("demo/status",str(msg.payload))#publish
+		client.publish(topic,str(msg.payload))#publish
  
 def on_publish(mqttc, obj, mid):
 	print("mid: "+str(mid))
