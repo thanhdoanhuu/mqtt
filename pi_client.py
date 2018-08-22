@@ -44,7 +44,7 @@ def on_log(mqttc, obj, level, string):
 	pass
 
 print('start...')
-client = mqtt.Client()
+client = client.Client()
 client.on_message = on_message
 client.on_connect = on_connect
 client.on_publish = on_publish
