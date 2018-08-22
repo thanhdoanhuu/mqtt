@@ -7,6 +7,16 @@ import json
 import socket
 #import RPi.GPIO as GPIO 
  
+
+
+class SendClass(object):
+    def __init__(self):
+        self.computerName = socket.gethostname()
+        self.computerIpAdress = socket.gethostbyname(socket.getfqdn())
+        self.message = 0
+
+sendOject = SendClass()
+
 gpio_pin = 14 
 #brokerHost = "172.21.33.24" #Rapian vituabox
 #brokerHost = "172.20.10.10" #Iphone
@@ -25,24 +35,25 @@ def on_message(mqttc, obj, msg):
 	print("Receive: " +msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
 
 	objReceive = json.loads(msg.payload)
-	objReceive["computerName"] = socket.gethostname()
-	objReceive["computerIpAdress"] = socket.gethostbyname(socket.getfqdn())
+	sendOject.computerName = objReceive["computerName"] = socket.gethostname()
+	sendOject.computerIpAdress = objReceive["computerIpAdress"] = socket.gethostbyname(socket.getfqdn())
 	
 
 	if(msg.topic == topic):
 		if(objReceive["message"] == 1): #bat LED
 			#GPIO.output(gpio_pin, GPIO.HIGH)
 			print('ON')
-			objReceive["message"] = "ON"
+			sendOject.message = "ON"
 		elif(objReceive["message"] == 0): #tat LED
 	 		# GPIO.output(gpio_pin, GPIO.LOW)
 			print('OFF')
-			objReceive["message"] = "OFF"
+			sendOject.message = "OFF"
 		else:
 			print('Do nothing')
-			objReceive["message"] = "Do nothing"
+			sendOject.message = "Do nothing"
 
-		client.publish(topicSend,json.dumps(objReceive.__dict__) )#publish
+		sendMessage = json.dumps(sendOject.__dict__)
+		client.publish(topicSend,sendMessage)#publish
  
 def on_publish(mqttc, obj, mid):
 	print("mid: "+str(mid))
