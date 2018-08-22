@@ -49,7 +49,7 @@ while(run):
 	client.publish(topics,sendMessage)#publish
 
 	input = raw_input("")
-	print("Ban chon " + input + "!")
+	print("Your choose: " + input + "!")
 
 client.disconnect() #disconnect
 client.loop_stop() #stop loop

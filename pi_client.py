@@ -20,6 +20,7 @@ def on_message(mqttc, obj, msg):
 	print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
 
 	objReceive = json.loads(msg.payload)
+	print (objReceive["computerName"])
 	print (objReceive["computerIpAdress"])
 	print (objReceive["message"])
 
