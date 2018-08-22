@@ -31,6 +31,8 @@ def on_message(mqttc, obj, msg):
 		elif(objReceive["message"] == 0): #tat LED
 	 		# GPIO.output(gpio_pin, GPIO.LOW)
 			print('OFF')
+
+		client.publish("demo/status",str(msg.payload))#publish
  
 def on_publish(mqttc, obj, mid):
 	print("mid: "+str(mid))

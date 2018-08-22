@@ -27,7 +27,7 @@ print("connecting to broker ",broker)
 client.connect(broker)#connect
 client.loop_start() #start loop to process received messages
 print("subscribing ")
-client.subscribe(topics)#subscribe
+client.subscribe("demo/status")#subscribe
 
 input = raw_input("type [on] to turn on LED or type [off] to turn off LED, type [exit] to exit:\n")
 print("Ban chon " + input + "!")
