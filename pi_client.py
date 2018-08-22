@@ -42,7 +42,7 @@ def on_message(mqttc, obj, msg):
 			print('Do nothing')
 			objReceive["message"] = "Do nothing"
 
-		client.publish(topicSend,str(msg.payload))#publish
+		client.publish(topicSend,json.dumps(objReceive.__dict__) )#publish
  
 def on_publish(mqttc, obj, mid):
 	print("mid: "+str(mid))
