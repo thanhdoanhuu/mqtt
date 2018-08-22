@@ -12,6 +12,7 @@ gpio_pin = 14
 brokerHost = "192.168.43.50" #Leo
 
 topic = "raspivn/demo/led"
+topicSend = "rapivn/status"
  
 #GPIO.setmode(GPIO.BCM) # chon kieu danh so chan GPIO la BCM
 #GPIO.setup(gpio_pin, GPIO.OUT)
@@ -20,12 +21,12 @@ def on_connect(mqttc, obj, flags, rc):
 	pass
  
 def on_message(mqttc, obj, msg):
-	print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
+	print("Receive: " +msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
 
 	objReceive = json.loads(msg.payload)
-	print (objReceive["computerName"])
-	print (objReceive["computerIpAdress"])
-	print (objReceive["message"])
+	# print (objReceive["computerName"])
+	# print (objReceive["computerIpAdress"])
+	# print (objReceive["message"])
 
 	if(msg.topic == topic):
 		if(objReceive["message"] == 1): #bat LED
@@ -34,8 +35,10 @@ def on_message(mqttc, obj, msg):
 		elif(objReceive["message"] == 0): #tat LED
 	 		# GPIO.output(gpio_pin, GPIO.LOW)
 			print('OFF')
+		else:
+			print('Do nothing')
 
-		# client.publish(topic,str(msg.payload))#publish
+		client.publish(topicSend,str(msg.payload))#publish
  
 def on_publish(mqttc, obj, mid):
 	print("mid: "+str(mid))
