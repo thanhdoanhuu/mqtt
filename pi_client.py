@@ -11,7 +11,7 @@ import define
 gpio_pin = define.gpio_pin
 brokerHost = define.brokerHost
 topic = define.topic
-topicReceive = define.topicReceive
+topicSend = define.topicReceive
 sendOject = define.SendClass()
 
 #GPIO.setmode(GPIO.BCM) # chon kieu danh so chan GPIO la BCM
