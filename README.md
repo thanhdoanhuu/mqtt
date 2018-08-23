@@ -5,6 +5,9 @@ sudo /etc/init.d/mosquitto start
 #stop mqtt broker
 sudos  /etc/init.d/mosquitto stop
 
+#install paho-mqtt for client (pi)
+pip install paho-mqtt
+
 
 #Install the dependencies
 	$ sudo apt-get update

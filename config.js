@@ -1,5 +1,7 @@
 // host = '172.16.153.122';	// hostname or IP address
-host = '172.21.33.25';	// hostname or IP address
+//host = '172.21.33.25';	// hostname or IP address
+// host = '192.168.43.50';	// hostname or IP address
+host = '10.0.2.15';
 // host = '172.16.153.110';	// hostname or IP address
 port = 9001;
 topic = 'rapivn/status';		// topic to subscribe to
