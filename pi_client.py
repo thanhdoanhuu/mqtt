@@ -6,26 +6,14 @@ import paho.mqtt.client as client
 import json
 import socket
 #import RPi.GPIO as GPIO 
- 
+import define 
 
+gpio_pin = define.gpio_pin
+brokerHost = define.brokerHost
+topic = define.topic
+topicReceive = define.topicReceive
+sendOject = define.SendClass()
 
-class SendClass(object):
-    def __init__(self):
-        self.computerName = socket.gethostname()
-        self.computerIpAdress = socket.gethostbyname(socket.getfqdn())
-        self.message = 0
-
-sendOject = SendClass()
-
-gpio_pin = 14 
-#brokerHost = "172.21.33.24" #Rapian vituabox
-#brokerHost = "172.20.10.10" #Iphone
-# brokerHost = "192.168.43.50" #Leo
-brokerHost = "172.21.33.25" #raspberry mac
-
-topic = "raspivn/demo/led"
-topicSend = "rapivn/status"
- 
 #GPIO.setmode(GPIO.BCM) # chon kieu danh so chan GPIO la BCM
 #GPIO.setup(gpio_pin, GPIO.OUT)
 
