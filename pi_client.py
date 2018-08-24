@@ -14,6 +14,8 @@ topic = define.topic
 topicSend = define.topicReceive
 sendOject = define.SendClass()
 
+status = "NONE"
+
 #GPIO.setmode(GPIO.BCM) # chon kieu danh so chan GPIO la BCM
 #GPIO.setup(gpio_pin, GPIO.OUT)
 
@@ -30,7 +32,7 @@ def on_message(mqttc, obj, msg):
 
 	if(msg.topic == topic):
 		if(objReceive["message"] == 2):
-			sendOject.message = "STATUS"
+			sendOject.message = status
 			sendMessage = json.dumps(sendOject.__dict__)
 			client.publish(topicSend,sendMessage)#publish
 			return
@@ -38,15 +40,18 @@ def on_message(mqttc, obj, msg):
 		if(objReceive["message"] == 1): #bat LED
 			#GPIO.output(gpio_pin, GPIO.HIGH)
 			print('ON')
-			sendOject.message = "ON"
+			status = "ON"
+			sendOject.message = status
 		elif(objReceive["message"] == 0): #tat LED
 	 		# GPIO.output(gpio_pin, GPIO.LOW)
 			print('OFF')
-			sendOject.message = "OFF"
+			status = "OFF"
+			sendOject.message = status
 		else:
 			print('Do nothing')
 			sendOject.message = "Do nothing"
 
+		
 		sendMessage = json.dumps(sendOject.__dict__)
 		client.publish(topicSend,sendMessage)#publish
  
