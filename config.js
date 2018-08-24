@@ -8,6 +8,7 @@ topic = 'rapivn/status';		// topic to subscribe to
 useTLS = false;
 username = null;
 password = null;
+qos = 0;
 // username = "jjolie";
 // password = "aa";
 

@@ -29,6 +29,12 @@ def on_message(mqttc, obj, msg):
 	
 
 	if(msg.topic == topic):
+		if(objReceive["message"] == 2):
+			sendOject.message = "STATUS"
+			sendMessage = json.dumps(sendOject.__dict__)
+			client.publish(topicSend,sendMessage)#publish
+			return
+
 		if(objReceive["message"] == 1): #bat LED
 			#GPIO.output(gpio_pin, GPIO.HIGH)
 			print('ON')
