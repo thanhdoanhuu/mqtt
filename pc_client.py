@@ -34,7 +34,7 @@ client.subscribe(topicReceive)#subscribe
 # client.subscribe(topic)#subscribe
 
 input = raw_input("type [on] to turn on LED or type [off] to turn off LED, type [exit] to exit:\n")
-print("Ban chon " + input + "!")
+print("Your choose " + input + "!")
 
 
 run = True

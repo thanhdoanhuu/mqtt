@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="mqttws31.js" type="text/javascript"></script>
+<script src="jquery.min.js" type="text/javascript"></script>
+<!-- <script src="config.js" type="text/javascript"></script> -->
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #f1f1f1;}
+.onoffswitch {
+    position: relative; width: 90px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 20px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 10px;
+    background-color: #F21158; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 10px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 18px; margin: 6px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 56px;
+    border: 2px solid #999999; border-radius: 20px;
+    transition: all 0.3s ease-in 0s; 
+}
+input[type=text]{
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+#broker {
+  width: 140px;
+}
+
+#port {
+  width: 70px;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin-left: 5px;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+  align-items: center;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.container {
+    padding: 16px;
+    width: 500px;
+}
+
+.container {
+    padding: 16px;
+    width: 100%;
+    text-align: center;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
+</style>
+<script type="text/javascript">
+    var mqtt;
+    var reconnectTimeout = 2000;
+    var host = '192.168.43.50'; // hostname or IP address
+    var port = 9001;
+    var topic = 'rapivn/status';    // topic to subscribe to
+    var useTLS = false;
+    var username = null;
+    var password = null;
+    var qos = 0;
+    var cleansession = true;
+
+    function MQTTconnect() {
+      if (typeof path == "undefined") {
+        path = '/mqtt';
+      }
+      host = $('#broker').val();
+      port = Number($('#port').val());
+      topic = $('#topic').val();
+      console.log(host + " " + port + " " + topic)
+      mqtt = new Paho.MQTT.Client(
+          host,
+          port,
+          path,
+          "web_" + parseInt(Math.random() * 100, 10)
+      );
+        var options = {
+            timeout: 3,
+            useSSL: useTLS,
+            cleanSession: cleansession,
+            onSuccess: onConnect,
+            onFailure: function (message) {
+                $('#status').val("Connection failed");
+                setTimeout(MQTTconnect, reconnectTimeout);
+            }
+        };
+
+        mqtt.onConnectionLost = onConnectionLost;
+        mqtt.onMessageArrived = onMessageArrived;
+
+        if (username != null) {
+            options.userName = username;
+            options.password = password;
+        }
+        console.log("Host="+ host + ", port=" + port + ", path=" + path + " TLS = " + useTLS + " username=" + username + " password=" + password);
+        mqtt.connect(options);
+    }
+
+    function onConnect() {
+      console.log('Connected to ' + host + ':' + port + path)
+      $('#status').val('Connected to ' + host + ':' + port + path)
+        // $('#status').text = 'Connected to ' + host + ':' + port + path
+        // Connection succeeded; subscribe to our topic
+        mqtt.subscribe(topic, {qos: 0});
+        $('#topic').val(topic);
+        sendPublish(2);
+    }
+
+    function onConnectionLost(response) {
+        setTimeout(MQTTconnect, reconnectTimeout);
+        $('#status').val("connection lost: " + responseObject.errorMessage + ". Reconnecting");
+
+    };
+
+    function onMessageArrived(message) {
+
+        var topic = message.destinationName;
+        var payload = message.payloadString;
+
+        $('#message-area').prepend('<li>' + topic + ' = ' + payload + '</li>');
+        var obj = JSON.parse(payload);
+        turnOnOffButton(obj.message);
+        
+    };
+
+    function publish(payload,topic,qos){
+        //use the below if you want to publish to a topic on connect
+        var message = new Paho.MQTT.Message(payload);
+        message.destinationName = topic;
+        message.qos = qos;
+        mqtt.send(message);
+    }
+
+    
+
+    function sendPublish(status){
+        
+        var message = '{"computerName": "javascript Thanh", "message": ' + status + ', "computerIpAdress": "172.21.33.25"}'
+        publish(message,'raspivn/demo/led',qos);
+    }
+
+    function turnOnOffButton(status){
+        if(status == "ON"){
+            $(".onoffswitch-inner").css({"margin-left": "0"});
+            $(".onoffswitch-switch").css({"right": "0px"});
+            console.log("Swich ON")
+        }else if(status == "OFF"){
+            $(".onoffswitch-inner").css({"margin-left": "-100%"});
+            $(".onoffswitch-switch").css({"right": "56px"});
+            console.log("Swich OFF")
+        }
+    }
+
+    $(document).ready(function(){
+
+        $("#myonoffswitch").click(function(){
+            if(this.checked){
+                turnOnOffButton("ON");
+                sendPublish(1);
+            }else{
+                turnOnOffButton("OFF"); 
+                sendPublish(0); 
+            }
+        });
+    });
+
+    </script>
+</head>
+<body>
+
+<h2>MQTT Websocket</h2>
+<div class="wrap-container">
+  <div class="container">
+    <label for="broker"><b>Broker</b></label>
+    <input type="text" id="broker" placeholder="Enter Broker IP Address" name="broker" value="192.168.43.50" required>
+
+    <label for="port"><b>Port</b></label>
+    <input type="text" id="port" placeholder="Enter Port Number" name="port" value="9001" required>
+
+    <label for="port"><b>Topic</b></label>
+    <input type="text" id="topic" placeholder="Enter Port Number" name="topic" value="rapivn/status" required>
+
+    <input type="submit" id="submit" value="Connect" onclick="MQTTconnect()">
+    
+  </div >
+  <label id="status">dkm</label>
+    
+  <div class="container">
+    <div class="onoffswitch" > 
+      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" >
+      <label class="onoffswitch-label" for="myonoffswitch">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="container" style="background-color:#f1f1f1">
+    <div id="message-area" style="text-align: left;" > <!-- rows="20" cols="100" -->
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
