@@ -9,12 +9,18 @@ import socket
 import define 
 
 gpio_pin = define.gpio_pin
-brokerHost = define.brokerHost
+# brokerHost = define.brokerHost
+brokerHost = socket.gethostbyname(socket.getfqdn())
+hostName = socket.gethostname()
 topic = define.topic
 topicSend = define.topicReceive
 sendOject = define.SendClass()
-
 status = "NONE"
+
+print ('-------------------------------')
+print ('Host Name: ', hostName)
+print ('IP Address: ', brokerHost)
+print ('-------------------------------')
 
 #GPIO.setmode(GPIO.BCM) # chon kieu danh so chan GPIO la BCM
 #GPIO.setup(gpio_pin, GPIO.OUT)
@@ -24,7 +30,7 @@ def on_connect(mqttc, obj, flags, rc):
  
 def on_message(mqttc, obj, msg):
 	global status
-	
+
 	print("Receive: " +msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
 
 	objReceive = json.loads(msg.payload)
