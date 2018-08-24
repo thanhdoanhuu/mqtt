@@ -23,6 +23,8 @@ def on_connect(mqttc, obj, flags, rc):
 	pass
  
 def on_message(mqttc, obj, msg):
+	global status
+	
 	print("Receive: " +msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
 
 	objReceive = json.loads(msg.payload)
