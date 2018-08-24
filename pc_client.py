@@ -9,24 +9,29 @@ topic = define.topic
 topicReceive = define.topicReceive
 sendOject = define.SendClass()
 
+print("Your broker is " + brokerHost +"  press enter, is not please input your broker address.")
+input = raw_input("")
+if input != "":
+	brokerHost = input
+
 #define callback
 def on_message(client, userdata, message):
     print("received: ",str(message.payload.decode("utf-8")))
-    print("message topic=",message.topic)
-    print("message qos=",message.qos)
-    print("message retain flag=",message.retain)
+    # print("message topic=",message.topic)
+    # print("message qos=",message.qos)
+    # print("message retain flag=",message.retain)
 
 client= paho.Client("client-001") #create client object client1.on_publish = on_publish #assign function to callback client1.connect(broker,port) #establish connection client1.publish("house/bulb1","on")
 ######Bind function to callback
 client.on_message=on_message
-client.will_set(topic, payload='{"computerName": "disconnect", "message": 0, "computerIpAdress": "172.21.33.25"}', qos=0, retain=False)
+client.will_set(topic, payload='{"computerName": "reconnect", "message": 0, "computerIpAdress": "172.21.33.25"}', qos=0, retain=False)
 #####
-print("connecting to broker ",brokerHost)
+print("Connecting to broker " + brokerHost)
 client.connect(brokerHost)#connect
 client.loop_start() #start loop to process received messages
-print("subscribing ")
+print("subscribing " + topicReceive)
 client.subscribe(topicReceive)#subscribe
-client.subscribe(topic)#subscribe
+# client.subscribe(topic)#subscribe
 
 input = raw_input("type [on] to turn on LED or type [off] to turn off LED, type [exit] to exit:\n")
 print("Ban chon " + input + "!")
